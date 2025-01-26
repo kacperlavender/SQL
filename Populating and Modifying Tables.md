@@ -65,3 +65,77 @@ mysql> SELECT person_id, fname, lname, birth_date
 +-----------+---------+--------+------------+
 1 row in set (0.00 sec)
 ```
+
+### Inserting data into `favorite_food`
+```
+mysql> INSERT INTO favourite_food (person_id, food)
+    -> VALUES (1, 'pizza');
+ERROR 1146 (42S02): Table 'sakila.favourite_food' doesn't exist
+mysql> INSERT INTO favorite_food (person_id, food)
+    -> VALUES (1, 'pizza');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO favourite_food (person_id, food)
+    -> VALUES (1, 'cookies');
+ERROR 1146 (42S02): Table 'sakila.favourite_food' doesn't exist
+mysql> INSERT INTO favorite_food (person_id, food)
+    -> VALUES (1, 'cookies');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO favorite_food (person_id, food)
+    -> VALUES (1, 'nachos');
+Query OK, 1 row affected (0.00 sec)
+
+```
+
+then, we should have:
+```
+mysql> SELECT food
+    -> FROM favorite_food
+    -> WHERE person_id = 1
+    -> ORDER BY food;
++---------+
+| food    |
++---------+
+| cookies |
+| nachos  |
+| pizza   |
++---------+
+3 rows in set (0.00 sec)
+```
+
+
+### Lets execute another insert statement to add Susan Smith to the person table:
+```
+mysql> INSERT INTO person
+-> (person_id, fname, lname, eye_color, birth_date,
+-> street, city, state, country, postal_code)
+-> VALUES (null, 'Susan','Smith', 'BL', '1975-11-02',
+-> '23 Maple St.', 'Arlington', 'VA', 'USA', '20220');
+Query OK, 1 row affected (0.01 sec)
+```
+
+```
+mysql> SELECT person_id, fname, lname, birth_date
+    -> FROM person;
++-----------+---------+--------+------------+
+| person_id | fname   | lname  | birth_date |
++-----------+---------+--------+------------+
+|         1 | William | Turner | 1972-05-27 |
+|         2 | Susan   | Smith  | 1975-11-02 |
++-----------+---------+--------+------------+
+2 rows in set (0.00 sec)
+```
+
+Now, it is time to update previous `person` with information about address:
+```
+mysql> UPDATE person
+    -> SET street = '1225 Tremont St.',
+    -> city = 'Boston',
+    -> state = 'Ma',
+    -> country = 'USA',
+    -> postal_code = '02138'
+    -> WHERE person_id = 1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+```
