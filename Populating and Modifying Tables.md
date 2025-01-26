@@ -139,3 +139,36 @@ mysql> UPDATE person
 Query OK, 1 row affected (0.00 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 ```
+
+
+Now, we have to delete data about `Susan`:
+```
+mysql> DELETE FROM person
+    -> WHERE person_id = 2
+    -> ;
+Query OK, 1 row affected (0.00 sec)
+
+
+#then we should have:
+mysql> SELECT person_id, fname, lname
+    -> FROM person
+    -> ;
++-----------+---------+--------+
+| person_id | fname   | lname  |
++-----------+---------+--------+
+|         1 | William | Turner |
++-----------+---------+--------+
+1 row in set (0.00 sec)
+```
+
+
+In general, it is always a good idea to explicitly specify the format string rather than
+relying on the default format. Here’s another version of the statement that uses the
+`str_to_date` function to specify which format string to use:
+```
+mysql> UPDATE person
+-> SET birth_date = str_to_date('DEC-21-1980' , '%b-%d-%Y')
+-> WHERE person_id = 1;
+Query OK, 1 row affected (0.12 sec)
+Rows matched: 1 Changed: 1 Warnings: 0
+```
