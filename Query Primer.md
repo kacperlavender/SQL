@@ -137,7 +137,33 @@ mysql> SELECT first_name, last_name
 
 ### Table links
 The second deviation from the simple from clause definition is the mandate that if more than one table appears in the from clause, the conditions used to link the tables must be included as well.
+```sql
+mysql> SELECT customer.first_name, customer.last_name,
+    ->  time(rental.rental_date) rental_time
+    -> FROM customer
+    ->  INNER JOIN rental
+    ->  ON customer.customer_id = rental.customer_id
+    -> WHERE date(rental.rental_date) = '2005-06-14';
++------------+-----------+-------------+
+| first_name | last_name | rental_time |
++------------+-----------+-------------+
+| CATHERINE  | CAMPBELL  | 23:17:03    |
+| JOYCE      | EDWARDS   | 23:16:26    |
+| AMBER      | DIXON     | 23:42:56    |
+...
+| TERRANCE   | ROUSH     | 23:12:46    |
+| TERRENCE   | GUNDERSON | 23:47:35    |
++------------+-----------+-------------+
+16 rows in set (0.02 sec)
+```
 
+```sql
+# how to use it?
+SELECT tabela1.kolumna, tabela2.kolumna
+FROM tabela1
+INNER JOIN tabela2
+ON tabela1.klucz_glowny = tabela2.klucz_obcy;
+```
 
 ### The where Clause
 In some cases, you may want to retrieve all rows from a table, especially for small tables such as language. Most of the time, however, you will not want to retrieve every row from a table but will want a way to filter out those rows that are not of interest. This is a job for the where clause
@@ -230,3 +256,43 @@ mysql> select c.first_name, c.last_name,
 +------------+-----------+-------------+
 16 rows in set (0.03 sec)
 ```
+
+### Sorting via Numeric Placeholders
+```sql
+mysql> select c.first_name, c.last_name, time(r.rental_date) rental_time
+    -> from customer c
+    -> inner join rental r
+    -> on c.customer_id = r.customer_id
+    -> where date(r.rental_date) = '2005-06-14'
+    -> order by 3 desc;
++------------+-----------+-------------+
+| first_name | last_name | rental_time |
++------------+-----------+-------------+
+| JEANETTE   | GREENE    | 23:54:46    |
+| CHARLES    | KOWALSKI  | 23:54:34    |
+| SONIA      | GREGORY   | 23:50:11    |
+| TERRENCE   | GUNDERSON | 23:47:35    |
+| AMBER      | DIXON     | 23:42:56    |
+| HERMAN     | DEVORE    | 23:35:09    |
+| MATTHEW    | MAHAN     | 23:25:58    |
+| CATHERINE  | CAMPBELL  | 23:17:03    |
+| GWENDOLYN  | MAY       | 23:16:27    |
+| JOYCE      | EDWARDS   | 23:16:26    |
+| TERRANCE   | ROUSH     | 23:12:46    |
+| DANIEL     | CABRAL    | 23:09:38    |
+| MIRIAM     | MCKINNEY  | 23:07:08    |
+| MINNIE     | ROMERO    | 23:00:34    |
+| ELMER      | NOE       | 22:55:13    |
+| JEFFERY    | PINSON    | 22:53:33    |
++------------+-----------+-------------+
+16 rows in set (0.02 sec)
+```
+
+
+Exercise 3-1 
+Retrieve the actor ID, first name, and last name for all actors. Sort by last name and then by first name.
+
+Exercise 3-2
+Retrieve the actor ID, first name, and last name for all actors whose last name equals 'WILLIAMS' or 'DAVIS'.
+
+Exercise 3-3 Write a query against the rental table that returns the IDs of the customers who ren‐ ted a film on July 5, 2005 (use the rental.rental_date column, and you can use the date() function to ignore the time component). Include a single row for each distinct customer ID.
