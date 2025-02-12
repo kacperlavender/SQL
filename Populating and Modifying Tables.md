@@ -7,7 +7,7 @@ Since there is not yet any data in the person and favorite_food tables, we have 
 ### Auto-incrementing `key_value`
 `ALTER TABLE person MODIFY person_id SMALLINT UNSIGNED AUTO_INCREMENT`
 
-```
+```sql
 If you are running these statements in your database, you will first
 need to disable the foreign key constraint on the favorite_food
 table, and then re-enable the constraints when finished. The pro‐
@@ -22,7 +22,7 @@ set foreign_key_checks=1;
 
 ### The insert statement
 It’s time to add some data. 
-```
+```sql
 mysql> INSERT INTO person
     -> (person_id, fname, lname, eye_color, birth_date)
     -> VALUES (null, 'William', 'Turner', 'BR', '1972-05-27');
@@ -30,7 +30,7 @@ Query OK, 1 row affected (0.00 sec)
 ```
 
 Ideally, we should have this:
-```
+```sql
 mysql> SELECT person_id, fname, lname, birth_date
     -> FROM person;
 +-----------+---------+--------+------------+
@@ -42,7 +42,7 @@ mysql> SELECT person_id, fname, lname, birth_date
 ```
 
 *Explaining:*
-```
+```sql
 Select: is for chosing data from table; then you have to specify, what do you want to see
 
 person_id, fname, lname, birth_date 
@@ -51,7 +51,7 @@ are the informations, which we want to see
 
 
 ### Filtering `select` function
-```
+```sql
 mysql> SELECT person_id, fname, lname, birth_date
     -> FROM person
     ->  WHERE lname = 'Turner';
@@ -67,7 +67,7 @@ mysql> SELECT person_id, fname, lname, birth_date
 ```
 
 ### Inserting data into `favorite_food`
-```
+```sql
 mysql> INSERT INTO favourite_food (person_id, food)
     -> VALUES (1, 'pizza');
 ERROR 1146 (42S02): Table 'sakila.favourite_food' doesn't exist
@@ -89,7 +89,7 @@ Query OK, 1 row affected (0.00 sec)
 ```
 
 then, we should have:
-```
+```sql
 mysql> SELECT food
     -> FROM favorite_food
     -> WHERE person_id = 1
@@ -106,7 +106,7 @@ mysql> SELECT food
 
 
 ### Lets execute another insert statement to add Susan Smith to the person table:
-```
+```sql
 mysql> INSERT INTO person
 -> (person_id, fname, lname, eye_color, birth_date,
 -> street, city, state, country, postal_code)
@@ -115,7 +115,7 @@ mysql> INSERT INTO person
 Query OK, 1 row affected (0.01 sec)
 ```
 
-```
+```sql
 mysql> SELECT person_id, fname, lname, birth_date
     -> FROM person;
 +-----------+---------+--------+------------+
@@ -128,7 +128,7 @@ mysql> SELECT person_id, fname, lname, birth_date
 ```
 
 Now, it is time to update previous `person` with information about address:
-```
+```sql
 mysql> UPDATE person
     -> SET street = '1225 Tremont St.',
     -> city = 'Boston',
@@ -142,7 +142,7 @@ Rows matched: 1  Changed: 1  Warnings: 0
 
 
 Now, we have to delete data about `Susan`:
-```
+```sql
 mysql> DELETE FROM person
     -> WHERE person_id = 2
     -> ;
@@ -165,7 +165,7 @@ mysql> SELECT person_id, fname, lname
 In general, it is always a good idea to explicitly specify the format string rather than
 relying on the default format. Here’s another version of the statement that uses the
 `str_to_date` function to specify which format string to use:
-```
+```sql
 mysql> UPDATE person
 -> SET birth_date = str_to_date('DEC-21-1980' , '%b-%d-%Y')
 -> WHERE person_id = 1;

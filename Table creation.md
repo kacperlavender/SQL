@@ -54,7 +54,7 @@ person table.
 The person_id and food columns comprise the primary key of the favorite_food
 table, and the person_id column is also a foreign key to the person table.
 
-```
+```sql
 mysql> CREATE TABLE person
     -> (person_id SMALLINT UNSIGNED,
     -> fname VARCHAR(20),
@@ -77,7 +77,7 @@ While on the topic of constraints, there is another type of constraint that woul
 useful for the person table. Another type of constraint called a check constraint constrains the allowable values for a particular column. MySQL allows a check constraint to be attached to a column definition, as in the following: `eye_color CHAR(2) CHECK (eye_color IN ('BR','BL','GR')),`. However, MySQL does provide another character data type called `enum` that merges the check constraint into the data type definition. Here’s what it would look like for the `eye_color` column definition: `eye_color ENUM('BR','BL','GR'),`. 
 
 So finally, we achieve: 
-```
+```sql
 CREATE TABLE person
 (person_id SMALLINT UNSIGNED,
 fname VARCHAR(20),
@@ -94,7 +94,7 @@ CONSTRAINT pk_person PRIMARY KEY (person_id)
 ```
 
 Ideally, we should achieve:
-```
+```sql
 mysql> CREATE TABLE person(person_id SMALLINT UNSIGNED,fname VARCHAR(20),lname VARCHAR(20),eye_color ENUM('BR','BL','GR'),birth_date DATE,street VARCHAR(30),city VARCHAR(20),state VARCHAR(20),country VARCHAR(20),postal_code VARCHAR(20),CONSTRAINT pk_person PRIMARY KEY (person_id));
 Query OK, 0 rows affected (0.02 sec)
 
@@ -119,7 +119,7 @@ mysql> desc person
 
 Now that you have created the `person` table, your next step will be to then create the
 `favorite_food` table:
-```
+```sql
 mysql> CREATE TABLE favorite_food
     -> (person_id SMALLINT UNSIGNED,
     -> food VARCHAR(20),
