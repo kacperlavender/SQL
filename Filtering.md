@@ -154,3 +154,56 @@ Using wildcards When searching for partial string matches, you might be interest
 | ------------------ | -------------------------------------- |
 | __                 | Exactly one character                  |
 | %                  | Any number of characters (including 0) |
+
+```sql
+mysql> select last_name, first_name
+    -> from customer
+    -> where last_name like '_A_T%S';
++-----------+------------+
+| last_name | first_name |
++-----------+------------+
+| MATTHEWS  | ERICA      |
+| WALTERS   | CASSANDRA  |
+| WATTS     | SHELLY     |
++-----------+------------+
+3 rows in set (0.03 sec)
+```
+#### **Wildcard Analysis:**
+1. **`_` (underscore)** – Represents exactly **one** character before "A".
+    - Matches: "M**A**TTHEWS", "W**A**LTERS", "W**A**TTS".
+    - Doesn't match: "AATTS" (because there's no character before "A").
+2. **`A`** – The second character **must be "A"**.
+3. **`_` (underscore)** – Represents exactly **one** character between "A" and "T".
+    - Matches: "MATTHEWS" (T comes after "A" with "T" in between), "WALTERS", "WATTS".
+4. **`T`** – The fourth character **must be "T"**.
+5. **`%` (percent)** – Represents **any number of characters (including none)** after "T".
+    - Matches: "MATTHEWS", "WALTERS", "WATTS".
+6. **`S`** – The last character **must be "S"**.
+    - Matches: "MATTHEWS", "WALTERS", "WATTS".
+    - Doesn't match: "WALTER" (no "S" at the end).
+
+
+| Search Expression  | Interpretation |
+|--------------------|---------------|
+| `F%`              | Strings beginning with **F** |
+| `%t`              | Strings ending with **t** |
+| `%bas%`           | Strings containing the substring **'bas'** |
+| `__t_`            | Four-character strings with **t** in the third position |
+| `___-__-____`     | 11-character strings with dashes in the **fourth** and **seventh** positions |
+
+```sql
+mysql> select rental_id, customer_id
+    -> from rental
+    -> where return_date is null;
++-----------+-------------+
+| rental_id | customer_id |
++-----------+-------------+
+|     11496 |         155 |
+|     11541 |         335 |
+...
+|     15894 |         168 |
+|     15966 |         374 |
++-----------+-------------+
+183 rows in set (0.01 sec)
+```
+
